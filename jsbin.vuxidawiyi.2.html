@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by anonymous (http://jsbin.com/vuxidawiyi/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+<script src="https://unpkg.com/@reactivex/rxjs@5.0.0-beta.7/dist/global/Rx.umd.js"></script>
+
+<script id="jsbin-javascript">
+const obs = {
+  next: (x) => console.log('next ' + x),
+  error: (err) => console.log('error ' + err),
+  complete: () => console.log('done')
+};
+
+const letter$ = Rx.Observable.interval(500)
+  .zip(Rx.Observable.of('a','b','c','d',2), (_, y) => y);
+
+// letter$
+//   .map(x => x.toUpperCase())
+//   .catch((err) => Rx.Observable.of('Z'))
+//   .subscribe(obs);
+
+
+// letter$
+//   .map(x => x.toUpperCase())
+//   .retry(2)
+//   .subscribe(obs);
+
+
+// Rx.Observable.interval(500)
+//   .take(5)
+//   .switchMap(_ => Rx.Observable.throw(new Error('oops')))
+//   .catch(error => Rx.Observable.of('It\'s ok!'))
+//   .subscribe(obs);
+
+
+// var result = bar.retryWhen(errorObs => errorObs.delay(3000));
+
+
+</script>
+</body>
+</html>

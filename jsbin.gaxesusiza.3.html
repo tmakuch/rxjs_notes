@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by anonymous (http://jsbin.com/gaxesusiza/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+<body>
+<script src="https://unpkg.com/@reactivex/rxjs@5.0.0-beta.7/dist/global/Rx.umd.js"></script>
+
+  <button id="start">Start</button>
+  <button id="stop">Stop</button>
+  <button id="reset">Reset</button>
+  <hr>
+  <input id="timer"></input>
+  <hr>  
+  <span id="time"></span>
+  
+  
+<script id="jsbin-javascript">
+const start = document.querySelector('#start');
+const stop = document.querySelector('#stop');
+const reset = document.querySelector('#reset');
+const timer = document.querySelector('#timer');
+const time = document.querySelector('#time');
+
+const render = ([s, label]) => {
+  time.innerHTML = label + ' : ' + s + 's';
+}
+
+const int$ = Rx.Observable.interval(100);
+
+const start$ = Rx.Observable.fromEvent(start, 'click');
+const stop$ = Rx.Observable.fromEvent(stop, 'click');
+const reset$ = Rx.Observable.fromEvent(reset, 'click');
+
+const input$ = Rx.Observable
+  .fromEvent(timer, 'input')
+  .map(event => event.target.value)
+  .startWith('');
+
+const action$ = Rx.Observable.merge(
+  int$.takeUntil(stop$).mapTo(x => x + 1),
+  reset$.mapTo(_ => 0)  
+);
+
+Rx.Observable.combineLatest(
+  start$
+    .switchMapTo(action$)
+    .scan((val, action) => action(val), 0),
+  input$)
+  .subscribe(render);
+
+</script>
+</body>
+</html>

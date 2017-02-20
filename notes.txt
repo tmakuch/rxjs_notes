@@ -1,0 +1,2 @@
+schedulers -> dla wielu wątków
+cycle.js -> framework subskrybuje się na nasz widok
